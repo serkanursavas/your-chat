@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-input {
+  border-radius: 0;
+  border-left: none;
+  border-top: none;
+  border-right: none;
+}
