@@ -1,3 +1,15 @@
+*::-webkit-scrollbar {
+  width: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #93bfcf;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: grey;
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -5,4 +17,8 @@ body {
   height: 100vh;
   background: #bdcdd6;
   overflow: hidden;
+}
+
+.window-shadow {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
