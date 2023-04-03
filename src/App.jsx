@@ -1,5 +1,6 @@
 import './App.css'
 import Signup from './pages/Signup'
+import Login from './pages/Login'
 import { ConfigProvider } from 'antd'
 
 function App() {
@@ -11,7 +12,7 @@ function App() {
         }
       }}
     >
-      <Signup />
+      <Login />
     </ConfigProvider>
   )
 }
