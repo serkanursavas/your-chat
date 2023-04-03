@@ -1,19 +1,9 @@
 import './App.css'
 import Signup from './pages/Signup'
-import { ConfigProvider } from 'antd'
+import Login from './pages/Login'
 
 function App() {
-  return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: '#6096B4'
-        }
-      }}
-    >
-      <Signup />
-    </ConfigProvider>
-  )
+  return <Login />
 }
 
 export default App
