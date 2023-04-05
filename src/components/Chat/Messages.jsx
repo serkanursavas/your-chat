@@ -15,7 +15,7 @@ const Messages = () => {
   return (
     <div
       ref={scrollRef}
-      className="box-border relative px-5 py-4 overflow-auto messages-height bg-beige"
+      className="box-border relative px-5 pt-4 pb-14 h-[544px] overflow-auto bg-beige"
     >
       {activeChat.chat.map((message, index) => (
         <Message

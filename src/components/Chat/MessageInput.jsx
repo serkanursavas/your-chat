@@ -3,7 +3,7 @@ import { PictureOutlined, PaperClipOutlined } from '@ant-design/icons'
 
 const MessageInput = () => {
   return (
-    <Form className="box-border absolute bottom-0 flex justify-between w-full p-2 pl-0 bg-white">
+    <Form className="absolute bottom-0 flex justify-between w-full p-2 pl-0 bg-white ">
       <Input
         className="!border-none !shadow-none !text-lg"
         type="text"

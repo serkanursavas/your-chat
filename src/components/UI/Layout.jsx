@@ -1,6 +1,8 @@
 const Layout = props => {
   return (
-    <div className="w-[75vw] h-[75vh] overflow-hidden rounded-md window-shadow flex relative">{props.children}</div>
+    <div className="w-[900px] h-[600px] overflow-hidden mx-auto rounded-md window-shadow grid grid-cols-3 ">
+      {props.children}
+    </div>
   )
 }
 

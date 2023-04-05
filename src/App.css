@@ -12,13 +12,18 @@
   background-color: grey;
 }
 
+*,
+html {
+  padding: 0;
+  margin: 0;
+}
+
 body {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 100vh;
   background: #bdcdd6;
-  overflow: hidden;
   font-family: 'Ubuntu', sans-serif;
 }
 
@@ -33,14 +38,6 @@ body {
   background: #93bfcf;
 }
 
-.chats-height {
-  height: calc(75vh - 127px);
-}
-
-.messages-height {
-  height: calc(75vh - 132px);
-}
-
 .window-shadow {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
@@ -50,9 +47,9 @@ body {
   width: 0;
   height: 0;
   top: 0;
-  right: -12px;
-  border-right: 12px solid transparent;
-  border-top: 12px solid #bdcdd6;
+  right: -10px;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #bdcdd6;
 }
 
 .guest-message-triangle {
@@ -60,7 +57,7 @@ body {
   width: 0;
   height: 0;
   top: 0;
-  left: -12px;
-  border-left: 12px solid transparent;
-  border-top: 12px solid #fff;
+  left: -10px;
+  border-left: 10px solid transparent;
+  border-top: 10px solid #fff;
 }

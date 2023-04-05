@@ -17,25 +17,22 @@ const Nav = () => {
   ]
 
   return (
-    <div className="box-border flex items-center justify-between h-20 p-2 bg-primary">
+    <div className="flex items-center justify-between px-2 h-14 bg-primary">
       <div className="font-semibold text-lg text-[#C9DFE7]">Your Chat</div>
-      <div className="flex items-end gap-2 ">
-        <ProfilePhoto
-          size="10"
-          profilePhoto="https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg?auto=compress&cs=tinysrgb&w=1200"
-        />
-
+      <div className="flex items-center justify-center">
         <Dropdown
           menu={{
             items,
-            className: '!bg-beige !p-0 !mt-1 !rounded-none'
+            className: '!bg-beige !p-0 !rounded-none'
           }}
           placement="bottomRight"
-          trigger={['click']}
         >
-          <button className="p-2 pb-1 bg-transparent border-none rounded-full cursor-pointer focus:bg-[#7AABC2] ">
-            <DownOutlined className="text-lg text-[#333]" />
-          </button>
+          <div className="h-10 p-1 rounded-full cursor-pointer hover:bg-secondary">
+            <ProfilePhoto
+              size="40"
+              profilePhoto="https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg?auto=compress&cs=tinysrgb&w=1200"
+            />
+          </div>
         </Dropdown>
       </div>
     </div>
