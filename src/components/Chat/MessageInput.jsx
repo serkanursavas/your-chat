@@ -17,7 +17,7 @@ const MessageInput = () => {
           <PictureOutlined className="text-xl opacity-30" />
         </button>
 
-        <Button className="bg-secondary hover:!text-white rounded-none">Send</Button>
+        <Button className="bg-primary  !text-white ">Send</Button>
       </div>
     </Form>
   )

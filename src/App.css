@@ -5,7 +5,7 @@
 }
 
 *::-webkit-scrollbar-track {
-  background: #93bfcf;
+  background: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
@@ -29,7 +29,7 @@ body {
   border-right: none;
 }
 
-:where(.css-dev-only-do-not-override-123njiu).ant-input-affix-wrapper > input.ant-input {
+:where(.css-dev-only-do-not-override-123njiu).ant-input-affix-wrapper.search-input > input.ant-input {
   background: #93bfcf;
 }
 
@@ -37,6 +37,30 @@ body {
   height: calc(75vh - 127px);
 }
 
+.messages-height {
+  height: calc(75vh - 132px);
+}
+
 .window-shadow {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.owner-message-triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 0;
+  right: -12px;
+  border-right: 12px solid transparent;
+  border-top: 12px solid #bdcdd6;
+}
+
+.guest-message-triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 0;
+  left: -12px;
+  border-left: 12px solid transparent;
+  border-top: 12px solid #fff;
 }

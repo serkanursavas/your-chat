@@ -8,8 +8,20 @@ export const chats = [
   {
     username: 'David',
     profilePhoto: 'https://images.pexels.com/photos/5490276/pexels-photo-5490276.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    lastMessage: "okey i'll handle it",
-    active: true
+    lastMessage: "i'll handle it",
+    active: true,
+    chat: [
+      { username: 'Jonathan', message: 'hii' },
+      { username: 'David', message: 'hello' },
+      { username: 'Jonathan', message: 'how are u?' },
+      { username: 'David', message: "I'm fine" },
+      { username: 'Jonathan', message: 'what did you do about the project?' },
+      { username: 'David', message: 'I finisihed home page' },
+      { username: 'Jonathan', message: 'good job' },
+      { username: 'Jonathan', message: 'can u fix the corrections for the home page? ' },
+      { username: 'David', message: 'of course' },
+      { username: 'David', message: "i'll handle it" }
+    ]
   },
   {
     username: 'Carol',
