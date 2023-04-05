@@ -1,24 +1,39 @@
-import { Button } from 'antd'
+import { Dropdown } from 'antd'
+import { DownOutlined, PoweroffOutlined } from '@ant-design/icons'
 
-import userProfile from '../../assets/user.svg'
+import ProfilePhoto from '../ProfilePhoto'
 
 const Nav = () => {
+  const items = [
+    {
+      key: '1',
+      icon: <PoweroffOutlined />,
+      label: (
+        <button className="w-full bg-transparent border-none shadow-none outline-none hover:cursor-pointer">
+          Logout
+        </button>
+      )
+    }
+  ]
+
   return (
     <div className="flex items-center justify-between h-20 p-2 bg-primary">
-      <div className="font-semibold">Your Chat</div>
-      <div className="flex items-center gap-2">
-        <img
-          className="w-10"
-          src={userProfile}
-          alt=""
-        />
-        <p>John</p>
-        <Button
-          size="small"
-          className="!text-xs !bg-secondary hover:!text-white !rounded-none !border-none"
+      <div className="font-semibold text-lg text-[#C9DFE7]">Your Chat</div>
+      <div className="flex items-end gap-2 ">
+        <ProfilePhoto size="10" />
+
+        <Dropdown
+          menu={{
+            items,
+            className: '!bg-beige !p-0 !mt-1 !rounded-none'
+          }}
+          placement="bottomRight"
+          trigger={['click']}
         >
-          Logout
-        </Button>
+          <button className="p-2 pb-1 bg-transparent border-none rounded-full cursor-pointer focus:bg-[#7AABC2] ">
+            <DownOutlined className="text-lg text-[#333]" />
+          </button>
+        </Dropdown>
       </div>
     </div>
   )

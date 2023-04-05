@@ -1,6 +1,6 @@
 const ChatOverview = () => {
   return (
-    <div className="flex w-full gap-2 p-2 hover:bg-primary">
+    <div className="flex w-full gap-2 p-2 hover:bg-primary ">
       <img
         src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1200"
         className="object-cover bg-center bg-cover rounded-full w-14 h-14"
