@@ -1,13 +1,19 @@
-const ChatOverview = () => {
+import ProfilePhoto from '../ProfilePhoto'
+
+const ChatOverview = props => {
   return (
-    <div className="flex w-full gap-2 p-2 hover:bg-primary ">
-      <img
-        src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1200"
-        className="object-cover bg-center bg-cover rounded-full w-14 h-14"
+    <div
+      className={`flex w-full gap-2 px-2 py-3 ${
+        props.active ? 'bg-[#7AABC2]' : ''
+      } hover:bg-primary active:bg-primary hover:cursor-pointer`}
+    >
+      <ProfilePhoto
+        size="14"
+        profilePhoto={props.profilePhoto}
       />
       <div className="flex flex-col justify-center">
-        <span className="block text-lg font-semibold leading-5 ">Kim</span>
-        <span className="block text-sm leading-4 opacity-40">Hello</span>
+        <span className="block text-lg font-medium leading-5 ">{props.username}</span>
+        <span className="block text-sm leading-4 opacity-40">{props.lastMessage}</span>
       </div>
     </div>
   )
