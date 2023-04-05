@@ -8,11 +8,11 @@ const ChatOverview = props => {
       } hover:bg-primary  active:bg-primary hover:cursor-pointer px-3 `}
     >
       <ProfilePhoto
-        size="56"
+        size="50"
         profilePhoto={props.profilePhoto}
       />
       <div className="flex flex-col justify-center">
-        <span className="text-[18px] font-medium ">{props.username}</span>
+        <span className="font-medium ">{props.username}</span>
         <span className="text-sm opacity-40">{props.lastMessage}</span>
       </div>
     </div>
