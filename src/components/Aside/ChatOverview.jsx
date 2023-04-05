@@ -3,17 +3,17 @@ import ProfilePhoto from '../ProfilePhoto'
 const ChatOverview = props => {
   return (
     <div
-      className={`flex w-full gap-2 px-2 py-3 ${
+      className={`flex items-center py-2 space-x-2 h-fit ${
         props.active ? 'bg-[#7AABC2]' : ''
-      } hover:bg-primary active:bg-primary hover:cursor-pointer`}
+      } hover:bg-primary  active:bg-primary hover:cursor-pointer px-3 `}
     >
       <ProfilePhoto
-        size="14"
+        size="56"
         profilePhoto={props.profilePhoto}
       />
       <div className="flex flex-col justify-center">
-        <span className="block text-lg font-medium leading-5 ">{props.username}</span>
-        <span className="block text-sm leading-4 opacity-40">{props.lastMessage}</span>
+        <span className="text-[18px] font-medium ">{props.username}</span>
+        <span className="text-sm opacity-40">{props.lastMessage}</span>
       </div>
     </div>
   )

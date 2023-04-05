@@ -1,10 +1,21 @@
 const ProfilePhoto = props => {
   return (
-    <img
-      className={`object-cover w-${props.size} h-${props.size} bg-center bg-cover rounded-full select-none`}
-      src={props.profilePhoto}
-      alt=""
-    />
+    <div
+      style={{
+        width: `${props.size}px`,
+        height: `${props.size}px`
+      }}
+    >
+      <img
+        style={{
+          width: `${props.size}px`,
+          height: `${props.size}px`
+        }}
+        className={`object-cover bg-center bg-cover rounded-full select-none`}
+        src={props.profilePhoto}
+        alt=""
+      />
+    </div>
   )
 }
 
