@@ -7,6 +7,10 @@ const Chats = () => {
       <ChatOverview />
       <ChatOverview />
       <ChatOverview />
+      <ChatOverview />
+      <ChatOverview />
+      <ChatOverview />
+      <ChatOverview />
     </div>
   )
 }

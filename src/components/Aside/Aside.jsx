@@ -4,7 +4,7 @@ import Chats from './Chats'
 
 const Aside = props => {
   return (
-    <aside className="flex flex-col w-2/6 bg-secondary">
+    <aside className="flex flex-col w-2/6 bg-secondary ">
       <Nav />
       <Search />
       <Chats />

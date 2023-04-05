@@ -4,8 +4,8 @@ import video from '../../assets/video.svg'
 
 const ChatInfo = () => {
   return (
-    <div className="box-border flex items-center justify-between h-20 p-2 bg-secondary">
-      <div className="text-lg ">Serkan</div>
+    <div className="box-border flex items-center justify-between h-20 px-5 py-2 bg-secondary">
+      <div className="text-xl font-semibold">Julia</div>
       <div className="flex gap-3">
         <img
           src={video}

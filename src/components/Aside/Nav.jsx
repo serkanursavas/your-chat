@@ -4,7 +4,7 @@ import userProfile from '../../assets/user.svg'
 
 const Nav = () => {
   return (
-    <div className="box-border flex items-center justify-between h-20 p-2 bg-primary">
+    <div className="flex items-center justify-between h-20 p-2 bg-primary">
       <div className="font-semibold">Your Chat</div>
       <div className="flex items-center gap-2">
         <img

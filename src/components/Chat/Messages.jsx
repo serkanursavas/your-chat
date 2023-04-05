@@ -2,11 +2,11 @@ import Message from './Message'
 
 const Messages = () => {
   return (
-    <div className="box-border relative bg-beige">
+    <div className="box-border relative p-4 bg-beige">
       <Message />
+      <Message owner={true} />
       <Message />
-      <Message />
-      <Message />
+      <Message owner={true} />
       <Message />
     </div>
   )
