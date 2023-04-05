@@ -17,7 +17,7 @@ const Nav = () => {
   ]
 
   return (
-    <div className="flex items-center justify-between h-20 p-2 bg-primary">
+    <div className="box-border flex items-center justify-between h-20 p-2 bg-primary">
       <div className="font-semibold text-lg text-[#C9DFE7]">Your Chat</div>
       <div className="flex items-end gap-2 ">
         <ProfilePhoto size="10" />

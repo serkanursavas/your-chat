@@ -29,6 +29,14 @@ body {
   border-right: none;
 }
 
+:where(.css-dev-only-do-not-override-123njiu).ant-input-affix-wrapper > input.ant-input {
+  background: #93bfcf;
+}
+
+.chats-height {
+  height: calc(75vh - 127px);
+}
+
 .window-shadow {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
