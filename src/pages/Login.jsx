@@ -7,7 +7,7 @@ const Login = () => {
   return (
     <div className="p-5 text-center bg-white border border-gray-200 border-solid rounded-md shadow-md w-72">
       <h3 className="mb-2 text-3xl text-primary">YOUR CHAT</h3>
-      <h4 className="mt-2 font-thin">Login</h4>
+      <h4 className="mt-2 mb-10 font-thin">Login</h4>
       <Form
         form={form}
         requiredMark={true}

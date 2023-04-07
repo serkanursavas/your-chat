@@ -19,12 +19,29 @@ const beforeUpload = file => {
   }
   return isJpgOrPng && isLt2M
 }
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
+const auth = getAuth()
 
 const Signup = () => {
   const [form] = Form.useForm()
 
   const onFinish = values => {
-    console.log(values)
+    const email = values.email
+    const password = values.password
+
+    const response = createUserWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        // Signed in
+        const user = userCredential.user
+
+        console.log(user)
+        // ...
+      })
+      .catch(error => {
+        const errorCode = error.code
+        const errorMessage = error.message
+        // ..
+      })
   }
 
   const [loading, setLoading] = useState(false)
@@ -58,7 +75,7 @@ const Signup = () => {
   return (
     <div className="p-5 text-center bg-white border border-gray-200 border-solid rounded-md shadow-md w-72">
       <h3 className="mb-2 text-3xl text-primary">YOUR CHAT</h3>
-      <h4 className="mt-2 font-thin">Register</h4>
+      <h4 className="mt-2 mb-10 font-thin">Register</h4>
       <Form
         form={form}
         onFinish={onFinish}
