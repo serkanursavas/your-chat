@@ -1,49 +1,28 @@
 import { Form, Input, Button, Upload, message } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons'
-
 import { useState } from 'react'
-
-const getBase64 = (img, callback) => {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
-}
-const beforeUpload = file => {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!')
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!')
-  }
-  return isJpgOrPng && isLt2M
-}
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
-const auth = getAuth()
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+import { auth } from '../store/firebase'
 
 const Signup = () => {
   const [form] = Form.useForm()
+  const [error, setError] = useState()
+  const [username, setUsername] = useState('')
 
-  const onFinish = values => {
+  const onFinish = async values => {
+    const name = values.name
     const email = values.email
     const password = values.password
 
-    const response = createUserWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        // Signed in
-        const user = userCredential.user
-
-        console.log(user)
-        // ...
-      })
-      .catch(error => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        // ..
-      })
+    try {
+      const response = await createUserWithEmailAndPassword(auth, email, password)
+    } catch (error) {
+      setError(error)
+    }
   }
 
+  // uploading img to firestore
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState()
   const handleChange = info => {
@@ -51,13 +30,24 @@ const Signup = () => {
       setLoading(true)
       return
     }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, url => {
+  }
+  const handleFileUpload = async file => {
+    const storage = getStorage()
+    const storageRef = ref(storage, username)
+    console.log(username)
+
+    const uploadTask = uploadBytesResumable(storageRef, file)
+
+    uploadTask.on(
+      error => {
+        // Handle unsuccessful uploads
+      },
+      async () => {
+        const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref)
         setLoading(false)
-        setImageUrl(url)
-      })
-    }
+        setImageUrl(downloadUrl)
+      }
+    )
   }
   const uploadButton = (
     <div>
@@ -94,6 +84,10 @@ const Signup = () => {
             prefix={<UserOutlined />}
             placeholder=" Name"
             className="custom-input !shadow-none"
+            onChange={e => {
+              setUsername(e.target.value)
+              console.log(username)
+            }}
           />
         </Form.Item>
         <Form.Item
@@ -140,16 +134,25 @@ const Signup = () => {
           listType="picture-circle"
           className="avatar-uploader"
           showUploadList={false}
-          beforeUpload={beforeUpload}
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           onChange={handleChange}
+          customRequest={({ file }) => handleFileUpload(file)}
         >
           {imageUrl ? (
             <img
               src={imageUrl}
               alt="avatar"
               style={{
-                width: '100%'
+                width: '95%',
+                borderRadius: '100%',
+                border: '1px solid #ddd',
+                backgroundColor: 'white',
+                padding: '5px',
+                boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
+                maxWidth: '95%',
+                maxHeight: '95%',
+                minWidth: '95%',
+                minHeight: '95%',
+                objectFit: 'cover'
               }}
             />
           ) : (
@@ -171,6 +174,7 @@ const Signup = () => {
           )}
         </Form.Item>
       </Form>
+      {error && <p>Something went wrong!</p>}
       <p className="text-sm font-light">
         You already have an account?{' '}
         <a
