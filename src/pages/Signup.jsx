@@ -1,9 +1,10 @@
 import { Form, Input, Button, Upload, Alert, notification } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useState, useRef } from 'react'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { auth } from '../store/firebase'
+import { auth, db } from '../store/firebase'
+import { doc, setDoc, addDoc, collection } from 'firebase/firestore'
 
 const Signup = () => {
   const [api, contextHolder] = notification.useNotification()
@@ -30,7 +31,22 @@ const Signup = () => {
     const password = values.password
 
     try {
-      const response = await createUserWithEmailAndPassword(auth, email, password)
+      createUserWithEmailAndPassword(auth, email, password).then(async response => {
+        await updateProfile(response.user, {
+          displayName: name,
+          photoURL: imageUrl
+        })
+
+        // Add a new document in collection "users"
+        await setDoc(doc(db, 'users', response.user.uid), {
+          uid: response.user.uid,
+          name,
+          email,
+          photoURL: imageUrl
+        })
+
+        await setDoc(doc(db, 'userChats', response.user.uid), {})
+      })
     } catch (error) {
       setError(error)
       openNotificationWithIcon('error', 'topLeft')
