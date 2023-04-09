@@ -1,14 +1,28 @@
-import { Form, Input, Button, Upload, message } from 'antd'
+import { Form, Input, Button, Upload, Alert, notification } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { auth } from '../store/firebase'
 
 const Signup = () => {
+  const [api, contextHolder] = notification.useNotification()
+  const openNotificationWithIcon = (type, placement) => {
+    api[type]({
+      message: 'Email already use in.',
+      description: 'Please enter a different email.',
+      placement,
+      style: {
+        boxShadow:
+          '0px 2px 4px rgba(255, 0, 0, 0.2), 0px 4px 8px rgba(255, 0, 0, 0.1), 0px 8px 16px rgba(255, 0, 0, 0.05)'
+      }
+    })
+  }
+
   const [form] = Form.useForm()
   const [error, setError] = useState()
-  const [username, setUsername] = useState('')
+  const [username, setUsername] = useState()
+  const emailRef = useRef(null)
 
   const onFinish = async values => {
     const name = values.name
@@ -19,6 +33,9 @@ const Signup = () => {
       const response = await createUserWithEmailAndPassword(auth, email, password)
     } catch (error) {
       setError(error)
+      openNotificationWithIcon('error', 'topLeft')
+      form.setFieldValue('email', '')
+      emailRef.current.focus()
     }
   }
 
@@ -34,7 +51,6 @@ const Signup = () => {
   const handleFileUpload = async file => {
     const storage = getStorage()
     const storageRef = ref(storage, username)
-    console.log(username)
 
     const uploadTask = uploadBytesResumable(storageRef, file)
 
@@ -64,6 +80,7 @@ const Signup = () => {
 
   return (
     <div className="p-5 text-center bg-white border border-gray-200 border-solid rounded-md shadow-md w-72">
+      {contextHolder}
       <h3 className="mb-2 text-3xl text-primary">YOUR CHAT</h3>
       <h4 className="mt-2 mb-10 font-thin">Register</h4>
       <Form
@@ -86,13 +103,11 @@ const Signup = () => {
             className="custom-input !shadow-none"
             onChange={e => {
               setUsername(e.target.value)
-              console.log(username)
             }}
           />
         </Form.Item>
         <Form.Item
           name="email"
-          hasFeedback
           rules={[
             {
               required: true,
@@ -104,6 +119,7 @@ const Signup = () => {
           ]}
         >
           <Input
+            ref={emailRef}
             prefix={<MailOutlined />}
             placeholder=" Email"
             className="custom-input !shadow-none"
@@ -119,7 +135,7 @@ const Signup = () => {
             },
             {
               pattern: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/,
-              message: 'must include one uppercase and one digit'
+              message: 'It must include one uppercase and one digit'
             }
           ]}
         >
@@ -132,10 +148,11 @@ const Signup = () => {
         <Upload
           name="avatar"
           listType="picture-circle"
-          className="avatar-uploader"
+          className="mt-2 avatar-uploader"
           showUploadList={false}
           onChange={handleChange}
           customRequest={({ file }) => handleFileUpload(file)}
+          disabled={username === undefined}
         >
           {imageUrl ? (
             <img
@@ -174,7 +191,7 @@ const Signup = () => {
           )}
         </Form.Item>
       </Form>
-      {error && <p>Something went wrong!</p>}
+
       <p className="text-sm font-light">
         You already have an account?{' '}
         <a
