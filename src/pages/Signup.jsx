@@ -4,9 +4,11 @@ import { useState, useRef } from 'react'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { auth, db } from '../store/firebase'
-import { doc, setDoc, addDoc, collection } from 'firebase/firestore'
+import { doc, setDoc } from 'firebase/firestore'
+import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {
+  const navigate = useNavigate()
   const [api, contextHolder] = notification.useNotification()
   const openNotificationWithIcon = (type, placement) => {
     api[type]({
@@ -46,6 +48,7 @@ const Signup = () => {
         })
 
         await setDoc(doc(db, 'userChats', response.user.uid), {})
+        navigate('/')
       })
     } catch (error) {
       setError(error)

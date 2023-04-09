@@ -6,8 +6,12 @@ import './index.css'
 import { ConfigProvider } from 'antd'
 import { antdTheme } from './utility/config-provider'
 
+import { AuthContextProvider } from './context/AuthContext'
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <ConfigProvider theme={antdTheme}>
-    <App />
+    <AuthContextProvider>
+      <App />
+    </AuthContextProvider>
   </ConfigProvider>
 )
