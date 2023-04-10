@@ -1,5 +1,7 @@
 import { Dropdown } from 'antd'
-import { DownOutlined, PoweroffOutlined } from '@ant-design/icons'
+import { PoweroffOutlined } from '@ant-design/icons'
+import { signOut } from 'firebase/auth'
+import { auth } from '../../store/firebase'
 
 import ProfilePhoto from '../ProfilePhoto'
 
@@ -9,7 +11,10 @@ const Nav = () => {
       key: '1',
       icon: <PoweroffOutlined />,
       label: (
-        <button className="w-full bg-transparent border-none shadow-none outline-none hover:cursor-pointer">
+        <button
+          onClick={() => signOut(auth)}
+          className="w-full bg-transparent border-none shadow-none outline-none hover:cursor-pointer"
+        >
           Logout
         </button>
       )

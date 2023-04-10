@@ -5,7 +5,7 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { auth, db } from '../store/firebase'
 import { doc, setDoc } from 'firebase/firestore'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 const Signup = () => {
   const navigate = useNavigate()
@@ -213,12 +213,12 @@ const Signup = () => {
 
       <p className="text-sm font-light">
         You already have an account?{' '}
-        <a
-          href="#"
+        <Link
+          to="/login"
           className="no-underline text-primary"
         >
           Login
-        </a>
+        </Link>
       </p>
     </div>
   )

@@ -1,5 +1,6 @@
 import { Form, Input, Button } from 'antd'
 import { LockOutlined, MailOutlined } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
   const [form] = Form.useForm()
@@ -69,12 +70,12 @@ const Login = () => {
       </Form>
       <p className="text-sm font-light">
         You don't have an account?{' '}
-        <a
-          href="#"
+        <Link
+          to="/signup"
           className="no-underline text-primary"
         >
           Sign Up
-        </a>
+        </Link>
       </p>
     </div>
   )
