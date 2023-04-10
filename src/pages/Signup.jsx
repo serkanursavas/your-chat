@@ -1,4 +1,4 @@
-import { Form, Input, Button, Upload, Alert, notification } from 'antd'
+import { Form, Input, Button, Upload, notification } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useState, useRef } from 'react'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
