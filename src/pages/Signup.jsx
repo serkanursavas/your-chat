@@ -1,32 +1,64 @@
-import { Form, Input, Button, Upload, message } from 'antd'
+import { Form, Input, Button, Upload, notification } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons'
-
-import { useState } from 'react'
-
-const getBase64 = (img, callback) => {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
-}
-const beforeUpload = file => {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!')
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!')
-  }
-  return isJpgOrPng && isLt2M
-}
+import { useState, useRef } from 'react'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+import { auth, db } from '../store/firebase'
+import { doc, setDoc } from 'firebase/firestore'
+import { useNavigate, Link } from 'react-router-dom'
 
 const Signup = () => {
-  const [form] = Form.useForm()
-
-  const onFinish = values => {
-    console.log(values)
+  const navigate = useNavigate()
+  const [api, contextHolder] = notification.useNotification()
+  const openNotificationWithIcon = (type, placement) => {
+    api[type]({
+      message: 'Email already use in.',
+      description: 'Please enter a different email.',
+      placement,
+      style: {
+        boxShadow:
+          '0px 2px 4px rgba(255, 0, 0, 0.2), 0px 4px 8px rgba(255, 0, 0, 0.1), 0px 8px 16px rgba(255, 0, 0, 0.05)'
+      }
+    })
   }
 
+  const [form] = Form.useForm()
+  const [error, setError] = useState()
+  const [username, setUsername] = useState()
+  const emailRef = useRef(null)
+
+  const onFinish = async values => {
+    const name = values.name
+    const email = values.email
+    const password = values.password
+
+    try {
+      createUserWithEmailAndPassword(auth, email, password).then(async response => {
+        await updateProfile(response.user, {
+          displayName: name,
+          photoURL: imageUrl
+        })
+
+        // Add a new document in collection "users"
+        await setDoc(doc(db, 'users', response.user.uid), {
+          uid: response.user.uid,
+          name,
+          email,
+          photoURL: imageUrl
+        })
+
+        await setDoc(doc(db, 'userChats', response.user.uid), {})
+        navigate('/')
+      })
+    } catch (error) {
+      setError(error)
+      openNotificationWithIcon('error', 'topLeft')
+      form.setFieldValue('email', '')
+      emailRef.current.focus()
+    }
+  }
+
+  // uploading img to firestore
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState()
   const handleChange = info => {
@@ -34,13 +66,23 @@ const Signup = () => {
       setLoading(true)
       return
     }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, url => {
+  }
+  const handleFileUpload = async file => {
+    const storage = getStorage()
+    const storageRef = ref(storage, username)
+
+    const uploadTask = uploadBytesResumable(storageRef, file)
+
+    uploadTask.on(
+      error => {
+        // Handle unsuccessful uploads
+      },
+      async () => {
+        const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref)
         setLoading(false)
-        setImageUrl(url)
-      })
-    }
+        setImageUrl(downloadUrl)
+      }
+    )
   }
   const uploadButton = (
     <div>
@@ -57,8 +99,9 @@ const Signup = () => {
 
   return (
     <div className="p-5 text-center bg-white border border-gray-200 border-solid rounded-md shadow-md w-72">
+      {contextHolder}
       <h3 className="mb-2 text-3xl text-primary">YOUR CHAT</h3>
-      <h4 className="mt-2 font-thin">Register</h4>
+      <h4 className="mt-2 mb-10 font-thin">Register</h4>
       <Form
         form={form}
         onFinish={onFinish}
@@ -77,11 +120,13 @@ const Signup = () => {
             prefix={<UserOutlined />}
             placeholder=" Name"
             className="custom-input !shadow-none"
+            onChange={e => {
+              setUsername(e.target.value)
+            }}
           />
         </Form.Item>
         <Form.Item
           name="email"
-          hasFeedback
           rules={[
             {
               required: true,
@@ -93,6 +138,7 @@ const Signup = () => {
           ]}
         >
           <Input
+            ref={emailRef}
             prefix={<MailOutlined />}
             placeholder=" Email"
             className="custom-input !shadow-none"
@@ -108,7 +154,7 @@ const Signup = () => {
             },
             {
               pattern: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/,
-              message: 'must include one uppercase and one digit'
+              message: 'It must include one uppercase and one digit'
             }
           ]}
         >
@@ -121,18 +167,28 @@ const Signup = () => {
         <Upload
           name="avatar"
           listType="picture-circle"
-          className="avatar-uploader"
+          className="mt-2 avatar-uploader"
           showUploadList={false}
-          beforeUpload={beforeUpload}
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           onChange={handleChange}
+          customRequest={({ file }) => handleFileUpload(file)}
+          disabled={username === undefined}
         >
           {imageUrl ? (
             <img
               src={imageUrl}
               alt="avatar"
               style={{
-                width: '100%'
+                width: '95%',
+                borderRadius: '100%',
+                border: '1px solid #ddd',
+                backgroundColor: 'white',
+                padding: '5px',
+                boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
+                maxWidth: '95%',
+                maxHeight: '95%',
+                minWidth: '95%',
+                minHeight: '95%',
+                objectFit: 'cover'
               }}
             />
           ) : (
@@ -154,14 +210,15 @@ const Signup = () => {
           )}
         </Form.Item>
       </Form>
+
       <p className="text-sm font-light">
         You already have an account?{' '}
-        <a
-          href="#"
+        <Link
+          to="/login"
           className="no-underline text-primary"
         >
           Login
-        </a>
+        </Link>
       </p>
     </div>
   )

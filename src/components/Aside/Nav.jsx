@@ -1,7 +1,11 @@
 import { Dropdown } from 'antd'
-import { DownOutlined, PoweroffOutlined } from '@ant-design/icons'
+import { PoweroffOutlined } from '@ant-design/icons'
+import { signOut } from 'firebase/auth'
+import { auth } from '../../store/firebase'
 
 import ProfilePhoto from '../ProfilePhoto'
+import { useContext } from 'react'
+import { AuthContext } from '../../context/AuthContext'
 
 const Nav = () => {
   const items = [
@@ -9,12 +13,17 @@ const Nav = () => {
       key: '1',
       icon: <PoweroffOutlined />,
       label: (
-        <button className="w-full bg-transparent border-none shadow-none outline-none hover:cursor-pointer">
+        <button
+          onClick={() => signOut(auth)}
+          className="w-full bg-transparent border-none shadow-none outline-none hover:cursor-pointer"
+        >
           Logout
         </button>
       )
     }
   ]
+
+  const { currentUser } = useContext(AuthContext)
 
   return (
     <div className="flex items-center justify-between px-2 h-14 bg-primary">
@@ -30,7 +39,7 @@ const Nav = () => {
           <div className="h-10 p-1 rounded-full cursor-pointer hover:bg-secondary">
             <ProfilePhoto
               size="40"
-              profilePhoto="https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg?auto=compress&cs=tinysrgb&w=1200"
+              profilePhoto={currentUser.photoURL}
             />
           </div>
         </Dropdown>
