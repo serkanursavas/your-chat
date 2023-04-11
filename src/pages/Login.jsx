@@ -49,7 +49,6 @@ const Login = () => {
       })
       .catch(error => {
         const errorCode = error.code
-        console.log(errorCode)
         if (errorCode === 'auth/user-not-found') {
           openNotificationWithIcon('error', 'topLeft', 'User not found')
           emailRef.current.focus()
