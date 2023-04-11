@@ -34,8 +34,8 @@ body {
   border-right: none;
 }
 
-:where(.css-dev-only-do-not-override-123njiu).ant-input-affix-wrapper.search-input > input.ant-input {
-  background: #93bfcf;
+aside input.ant-input {
+  background: #93bfcf !important;
 }
 
 .window-shadow {
@@ -60,4 +60,17 @@ body {
   left: -10px;
   border-left: 10px solid transparent;
   border-top: 10px solid #fff;
+}
+
+.spinner {
+  animation: spinnerAnimation 0.8s linear infinite; /* Adjust the animation duration as needed */
+}
+
+@keyframes spinnerAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
