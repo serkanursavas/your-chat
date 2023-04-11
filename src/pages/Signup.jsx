@@ -7,14 +7,6 @@ import { auth, db } from '../store/firebase'
 import { doc, setDoc } from 'firebase/firestore'
 import { useNavigate, Link } from 'react-router-dom'
 import { Spin } from 'antd'
-const antIcon = (
-  <LoadingOutlined
-    style={{
-      fontSize: 42
-    }}
-    spin
-  />
-)
 
 const Signup = () => {
   const navigate = useNavigate()
