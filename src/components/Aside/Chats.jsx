@@ -1,19 +1,49 @@
 import ChatOverview from './ChatOverview'
-import { chats } from '../../constants'
+
+import { doc, onSnapshot } from 'firebase/firestore'
+import { db } from '../../store/firebase'
+import { AuthContext } from '../../context/AuthContext'
+import { ChatContext } from '../../context/ChatContext'
+import { useContext, useEffect, useState } from 'react'
 
 const Chats = () => {
+  const { currentUser } = useContext(AuthContext)
+  const { dispatch } = useContext(ChatContext)
+  const [chats, setChats] = useState([])
+
+  useEffect(() => {
+    const getChats = () => {
+      const unsub = onSnapshot(doc(db, 'userChats', currentUser.uid), doc => {
+        doc.data() && setChats(Object.entries(doc.data()))
+      })
+
+      return () => {
+        unsub()
+      }
+    }
+
+    currentUser.uid && getChats()
+  }, [currentUser.uid])
+
+  const selectHandler = user => {
+    dispatch({ type: 'CHANGE_USER', payload: user })
+  }
+
   return (
     <div className="w-full h-[496px] overflow-hidden grow">
       <div className="w-full h-full overflow-y-auto bg-secondary">
-        {chats.map((chat, index) => {
+        {chats.map(chat => {
           return (
-            <ChatOverview
-              key={index}
-              username={chat.username}
-              profilePhoto={chat.profilePhoto}
-              lastMessage={chat.lastMessage}
-              active={chat.active}
-            />
+            <div
+              key={chat[0]}
+              onClick={() => selectHandler(chat[1].userInfo)}
+            >
+              <ChatOverview
+                username={chat[1].userInfo.name}
+                profilePhoto={chat[1].userInfo.photoUrl}
+                lastMessage={chat?.lastMessage}
+              />
+            </div>
           )
         })}
       </div>

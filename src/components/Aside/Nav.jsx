@@ -37,10 +37,12 @@ const Nav = () => {
           placement="bottomRight"
         >
           <div className="h-10 p-1 rounded-full cursor-pointer hover:bg-secondary">
-            <ProfilePhoto
-              size="40"
-              profilePhoto={currentUser.photoURL}
-            />
+            {currentUser && (
+              <ProfilePhoto
+                size="40"
+                profilePhoto={currentUser.photoURL}
+              />
+            )}
           </div>
         </Dropdown>
       </div>
