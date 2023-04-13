@@ -4,6 +4,7 @@ import { useEffect, useState, useContext } from 'react'
 import { collection, query, getDoc, getDocs, doc, where, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../../store/firebase'
 import { AuthContext } from '../../context/AuthContext'
+import { ChatContext } from '../../context/ChatContext'
 
 import ChatOverview from './ChatOverview'
 
@@ -12,6 +13,7 @@ const Search = () => {
   const [allUser, setAllUser] = useState([])
   const [filteredArray, setFilteredArray] = useState([])
   const { currentUser } = useContext(AuthContext)
+  const { dispatch } = useContext(ChatContext)
 
   useEffect(() => {
     const fetchCollection = async () => {
@@ -26,32 +28,30 @@ const Search = () => {
   }, [])
 
   const selectHandler = async (event, user) => {
+    dispatch({ type: 'CHANGE_USER', payload: user })
     // check is chat exist
     const combinedID = currentUser.uid > user.uid ? currentUser.uid + user.uid : user.uid + currentUser.uid
     const response = await getDoc(doc(db, 'chats', combinedID))
-    console.log(user.uid)
-    console.log(currentUser.uid)
+
     if (!response.exists()) {
       //create a chat in chats collection
       await setDoc(doc(db, 'chats', combinedID), { messages: [] })
 
-      // create userChats
+      // Create userChat
       await updateDoc(doc(db, 'userChats', currentUser.uid), {
         [combinedID + '.userInfo']: {
           uid: user.uid,
           name: user.name,
           photoUrl: user.photoURL
-        },
-        [combinedID + '.date']: serverTimestamp()
+        }
       })
 
       await updateDoc(doc(db, 'userChats', user.uid), {
         [combinedID + '.userInfo']: {
           uid: currentUser.uid,
-          name: currentUser.name,
+          name: currentUser.displayName,
           photoUrl: currentUser.photoURL
-        },
-        [combinedID + '.date']: serverTimestamp()
+        }
       })
     }
     setUsername('')
