@@ -12,8 +12,8 @@ export const AuthContextProvider = ({ children }) => {
       setCurrentUser(user)
     })
 
-    return () => {
-      unsub()
+    return async () => {
+      await unsub()
     }
   }, [])
 
