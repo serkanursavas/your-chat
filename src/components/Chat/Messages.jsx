@@ -1,30 +1,35 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useContext, useState } from 'react'
 
 import Message from './Message'
-import { chats } from '../../constants'
+import { doc, onSnapshot } from 'firebase/firestore'
+import { ChatContext } from '../../context/ChatContext'
+import { db } from '../../store/firebase'
 
 const Messages = () => {
-  const scrollRef = useRef(null)
-  const activeChat = chats.filter(chat => (chat.active ? chat : undefined)).shift()
+  const [messages, setMessages] = useState([])
+  const { data } = useContext(ChatContext)
 
   useEffect(() => {
-    const element = scrollRef.current
-    element.scrollTop = element.scrollHeight
-  }, [])
+    const unSub = onSnapshot(doc(db, 'chats', data.chatID), doc => {
+      doc.exists() && setMessages(doc.data().messages)
+    })
+
+    return () => {
+      unSub()
+    }
+  }, [data.chatID])
 
   return (
-    <div
-      ref={scrollRef}
-      className="box-border relative px-5 pt-4 h-[492px] overflow-auto bg-beige"
-    >
-      {activeChat.chat.map((message, index) => (
-        <Message
-          key={index}
-          owner={message.username == 'Jonathan'}
-          profilePhoto={activeChat.profilePhoto}
-          text={message.message}
-        />
-      ))}
+    <div className="box-border relative px-5 pt-4 h-[492px] overflow-auto bg-beige">
+      {messages.map(message => {
+        return (
+          <Message
+            key={message.id}
+            sender={message.senderID}
+            text={message.text}
+          />
+        )
+      })}
     </div>
   )
 }
