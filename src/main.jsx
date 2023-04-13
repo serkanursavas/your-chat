@@ -7,11 +7,14 @@ import { ConfigProvider } from 'antd'
 import { antdTheme } from './utility/config-provider'
 
 import { AuthContextProvider } from './context/AuthContext'
+import { ChatContextProvider } from './context/ChatContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <ConfigProvider theme={antdTheme}>
     <AuthContextProvider>
-      <App />
+      <ChatContextProvider>
+        <App />
+      </ChatContextProvider>
     </AuthContextProvider>
   </ConfigProvider>
 )
