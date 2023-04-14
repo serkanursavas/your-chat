@@ -10,38 +10,42 @@ import { db } from '../../store/firebase'
 const MessageInput = () => {
   const { currentUser } = useContext(AuthContext)
   const { data } = useContext(ChatContext)
-  console.log(data)
+  const [form] = Form.useForm()
 
   const onFinish = async values => {
     const text = values.text
+    form.resetFields()
 
-    await updateDoc(doc(db, 'chats', data.chatID), {
-      messages: arrayUnion({
-        id: uuid(),
-        text,
-        senderID: currentUser.uid,
-        date: Timestamp.now()
+    if (text !== undefined) {
+      await updateDoc(doc(db, 'chats', data.chatID), {
+        messages: arrayUnion({
+          id: uuid(),
+          text,
+          senderID: currentUser.uid,
+          date: Timestamp.now()
+        })
       })
-    })
 
-    await updateDoc(doc(db, 'userChats', currentUser.uid), {
-      [data.chatID + '.lastMessage']: {
-        text
-      },
-      [data.chatID + '.date']: serverTimestamp()
-    })
+      await updateDoc(doc(db, 'userChats', currentUser.uid), {
+        [data.chatID + '.lastMessage']: {
+          text
+        },
+        [data.chatID + '.date']: serverTimestamp()
+      })
 
-    await updateDoc(doc(db, 'userChats', data.user.uid), {
-      [data.chatID + '.lastMessage']: {
-        text
-      },
-      [data.chatID + '.date']: serverTimestamp()
-    })
+      await updateDoc(doc(db, 'userChats', data.user.uid), {
+        [data.chatID + '.lastMessage']: {
+          text
+        },
+        [data.chatID + '.date']: serverTimestamp()
+      })
+    }
   }
 
   return (
     data.chatID !== 'null' && (
       <Form
+        form={form}
         onFinish={onFinish}
         className="flex justify-between w-full h-[52px] p-2 pl-0 bg-white "
       >
@@ -66,7 +70,7 @@ const MessageInput = () => {
           <Button
             type="primary"
             htmlType="submit"
-            className="bg-primary  !text-white "
+            className="bg-primary  !text-white"
           >
             Send
           </Button>

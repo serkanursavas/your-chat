@@ -8,7 +8,8 @@ import { useContext, useEffect, useState } from 'react'
 
 const Chats = () => {
   const { currentUser } = useContext(AuthContext)
-  const { dispatch } = useContext(ChatContext)
+  const { dispatch, data } = useContext(ChatContext)
+
   const [chats, setChats] = useState([])
 
   useEffect(() => {
@@ -41,7 +42,8 @@ const Chats = () => {
               <ChatOverview
                 username={chat[1].userInfo.name}
                 profilePhoto={chat[1].userInfo.photoUrl}
-                lastMessage={chat?.lastMessage}
+                lastMessage={chat[1]?.lastMessage.text}
+                active={chat[1].userInfo.uid === data.user.uid}
               />
             </div>
           )
