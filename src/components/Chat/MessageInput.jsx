@@ -56,7 +56,8 @@ const MessageInput = () => {
           <Input
             className="!border-none !shadow-none !text-lg !w-[430px] !h-full"
             type="text"
-            placeholder="Type something..."
+            placeholder=" Type something..."
+            autoComplete="off"
           />
         </Form.Item>
         <div className="flex items-center gap-4">
