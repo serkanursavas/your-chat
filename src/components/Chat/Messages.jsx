@@ -4,6 +4,7 @@ import Message from './Message'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { ChatContext } from '../../context/ChatContext'
 import { db } from '../../store/firebase'
+import NoMessage from '../UI/NoMessage'
 
 const Messages = () => {
   const [messages, setMessages] = useState([])
@@ -21,15 +22,28 @@ const Messages = () => {
 
   return (
     <div className="box-border relative px-5 pt-4 h-[492px] overflow-auto bg-beige">
-      {messages.map(message => {
-        return (
-          <Message
-            key={message.id}
-            sender={message.senderID}
-            text={message.text}
-          />
-        )
-      })}
+      {messages.length !== 0 ? (
+        messages.map(message => {
+          const dateObj = new Date(message.date * 1000)
+          // Get the locale-specific date string in 24-hour format
+          const dateString = dateObj.toLocaleString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+          })
+
+          return (
+            <Message
+              key={message.id}
+              sender={message.senderID}
+              text={message.text}
+              messageTime={dateString}
+            />
+          )
+        })
+      ) : (
+        <NoMessage />
+      )}
     </div>
   )
 }

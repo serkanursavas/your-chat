@@ -8,7 +8,8 @@ import { useContext, useEffect, useState } from 'react'
 
 const Chats = () => {
   const { currentUser } = useContext(AuthContext)
-  const { dispatch } = useContext(ChatContext)
+  const { dispatch, data } = useContext(ChatContext)
+
   const [chats, setChats] = useState([])
 
   useEffect(() => {
@@ -32,20 +33,23 @@ const Chats = () => {
   return (
     <div className="w-full h-[496px] overflow-hidden grow">
       <div className="w-full h-full overflow-y-auto bg-secondary">
-        {chats.map(chat => {
-          return (
-            <div
-              key={chat[0]}
-              onClick={() => selectHandler(chat[1].userInfo)}
-            >
-              <ChatOverview
-                username={chat[1].userInfo.name}
-                profilePhoto={chat[1].userInfo.photoUrl}
-                lastMessage={chat?.lastMessage}
-              />
-            </div>
-          )
-        })}
+        {chats
+          ?.sort((a, b) => b[1].date - a[1].date)
+          .map(chat => {
+            return (
+              <div
+                key={chat[0]}
+                onClick={() => selectHandler(chat[1].userInfo)}
+              >
+                <ChatOverview
+                  username={chat[1].userInfo.name}
+                  profilePhoto={chat[1].userInfo.photoUrl}
+                  lastMessage={chat[1]?.lastMessage?.text}
+                  active={chat[1].userInfo.uid === data.user.uid}
+                />
+              </div>
+            )
+          })}
       </div>
     </div>
   )

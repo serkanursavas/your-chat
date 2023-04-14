@@ -19,7 +19,7 @@ const Message = props => {
           ref={scrollRef}
           className={`flex justify-end w-full space-x-4  mb-2 `}
         >
-          <div className="relative px-3 py-2 mt-2 text-sm rounded-lg rounded-tr-none h-fit bg-grey">
+          <div className="relative px-3 py-2 mt-2 text-sm rounded-lg rounded-tr-none max-w-[50%] h-fit bg-grey">
             <div className="owner-message-triangle"></div>
             {props.text}
           </div>
@@ -28,7 +28,7 @@ const Message = props => {
               src={currentUser.photoURL}
               className="object-cover bg-center bg-cover rounded-full w-11 h-11"
             />
-            <span className="text-xs opacity-40">just now</span>
+            <span className="mt-1 ml-2 text-xs opacity-40">{props.messageTime}</span>
           </div>
         </div>
       ) : (
@@ -39,9 +39,9 @@ const Message = props => {
               profilePhoto={data.user.photoUrl}
             />
 
-            <span className="text-xs opacity-40">just now</span>
+            <span className="mt-1 ml-2 text-xs opacity-40">{props.messageTime}</span>
           </div>
-          <div className="relative px-3 py-2 mt-2 text-sm bg-white rounded-lg rounded-tl-none h-fit">
+          <div className="relative px-3 py-2 mt-2 text-sm bg-white max-w-[50%] rounded-lg rounded-tl-none h-fit">
             <div className="guest-message-triangle"></div>
             {props.text}
           </div>

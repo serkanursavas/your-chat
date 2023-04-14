@@ -13,7 +13,11 @@ const ChatOverview = props => {
       />
       <div className="flex flex-col justify-center">
         <span className="font-medium ">{props.username}</span>
-        <span className="text-sm opacity-40">{props.lastMessage}</span>
+        {props.lastMessage.length < 24 ? (
+          <span className="text-sm opacity-40">{props.lastMessage}</span>
+        ) : (
+          <span className="text-sm opacity-40">{props.lastMessage.slice(0, 24) + '...'}</span>
+        )}
       </div>
     </div>
   )
