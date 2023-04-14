@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false)
-    }, 1000)
+    }, 1500)
   }, [currentUser])
 
   const ProtectedRoute = ({ children }) => {
