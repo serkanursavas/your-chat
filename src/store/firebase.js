@@ -5,13 +5,16 @@ import { getFirestore } from 'firebase/firestore'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyDDzMiLiHvTW5KF7iojpQeqt4aBkzSraqU',
-  authDomain: 'chat-app-c8b22.firebaseapp.com',
-  projectId: 'chat-app-c8b22',
-  storageBucket: 'chat-app-c8b22.appspot.com',
-  messagingSenderId: '687557316305',
-  appId: '1:687557316305:web:a59043d3ed15914d5f3ff0'
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 }
+
+console.log(import.meta.env.VITE_FIREBASE_API_KEY)
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig)
