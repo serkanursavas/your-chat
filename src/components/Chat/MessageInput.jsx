@@ -41,7 +41,7 @@ const MessageInput = () => {
   return (
     <Form
       onFinish={onFinish}
-      className="flex justify-between w-full p-2 pl-0 bg-white"
+      className="flex justify-between w-full h-[52px] p-2 pl-0 bg-white"
     >
       <Form.Item
         name="text"
