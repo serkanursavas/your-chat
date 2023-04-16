@@ -6,15 +6,20 @@ import { auth } from '../../store/firebase'
 import ProfilePhoto from '../ProfilePhoto'
 import { useContext } from 'react'
 import { AuthContext } from '../../context/AuthContext'
+import { ChatContext } from '../../context/ChatContext'
 
 const Nav = () => {
+  const { dispatch } = useContext(ChatContext)
   const items = [
     {
       key: '1',
       icon: <PoweroffOutlined />,
       label: (
         <button
-          onClick={() => signOut(auth)}
+          onClick={() => {
+            dispatch({ type: 'LOGOUT_USER' })
+            signOut(auth)
+          }}
           className="w-full bg-transparent border-none shadow-none outline-none hover:cursor-pointer"
         >
           Logout

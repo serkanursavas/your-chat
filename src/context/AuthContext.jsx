@@ -13,7 +13,6 @@ export const AuthContextProvider = ({ children }) => {
     })
 
     return async () => {
-      chrome
       unsub()
     }
   }, [])
