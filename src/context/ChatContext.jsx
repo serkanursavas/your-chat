@@ -21,6 +21,12 @@ export const ChatContextProvider = ({ children }) => {
             : action.payload.uid + currentUser.uid
       }
     }
+    if (action.type === 'LOGOUT_USER') {
+      return {
+        chatID: 'null',
+        user: {}
+      }
+    }
 
     return state
   }
