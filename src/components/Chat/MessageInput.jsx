@@ -2,7 +2,7 @@ import { Form, Input, Button } from 'antd'
 import { PictureOutlined, PaperClipOutlined } from '@ant-design/icons'
 import { AuthContext } from '../../context/AuthContext'
 import { ChatContext } from '../../context/ChatContext'
-import { useContext, useState } from 'react'
+import { useContext, useRef } from 'react'
 import { doc, updateDoc, arrayUnion, arrayRemove, Timestamp, serverTimestamp } from 'firebase/firestore'
 import { v4 as uuid } from 'uuid'
 import { db } from '../../store/firebase'
@@ -11,6 +11,7 @@ const MessageInput = () => {
   const { currentUser } = useContext(AuthContext)
   const { data } = useContext(ChatContext)
   const [form] = Form.useForm()
+  const inputRef = useRef(null)
 
   const onFinish = async values => {
     const text = values.text
@@ -25,6 +26,7 @@ const MessageInput = () => {
           date: Timestamp.now()
         })
       })
+      inputRef.current.focus()
 
       await updateDoc(doc(db, 'userChats', currentUser.uid), {
         [data.chatID + '.lastMessage']: {
@@ -54,6 +56,7 @@ const MessageInput = () => {
           className="flex items-center h-full"
         >
           <Input
+            ref={inputRef}
             className="!border-none !shadow-none !text-lg !w-[430px] !h-full"
             type="text"
             placeholder=" Type something..."
