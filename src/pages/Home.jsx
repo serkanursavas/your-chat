@@ -13,6 +13,16 @@ import { createContext } from 'react'
 const ReachableContext = createContext(null)
 
 const Home = () => {
+  const [openChats, setOpenChats] = useState(true)
+
+  const toggleChats = () => {
+    setOpenChats(!openChats)
+  }
+
+  useEffect(() => {
+    console.log(openChats)
+  }, [openChats])
+
   const [modal, contextHolder] = Modal.useModal()
   const TIMEOUT_SECONDS = 30 * 60 * 1000
 
@@ -74,9 +84,9 @@ const Home = () => {
   return (
     <ReachableContext.Provider value={remaining}>
       <Layout>
-        <Aside />
+        <Aside openChats={openChats} />
         {contextHolder}
-        <Chat />
+        <Chat toggleChats={toggleChats} />
       </Layout>
     </ReachableContext.Provider>
   )

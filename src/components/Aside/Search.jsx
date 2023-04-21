@@ -58,9 +58,9 @@ const Search = () => {
   }
 
   return (
-    <div className="!scroll-x-auto relative">
+    <div className="!scroll-x-auto !h-[6%] relative ">
       <Input
-        className="custom-input cursor-pointer search-input !shadow-none !p-3 !bg-secondary hover:!border-black focus:!border-black placeholder:!text-[#3d3d3d47] !border-[#3d3d3d47]"
+        className="custom-input cursor-pointer !h-full search-input !shadow-none !p-3 !bg-secondary hover:!border-black focus:!border-black placeholder:!text-[#3d3d3d47] !border-[#3d3d3d47]"
         placeholder="Find a user"
         onChange={e => {
           const filteredArray = allUser.filter(item => item.name.includes(e.target.value))
@@ -71,7 +71,7 @@ const Search = () => {
         prefix={<SearchOutlined className="!text-lg" />}
       />
       {username && (
-        <div className="overflow-y-auto h-[496px]">
+        <div className="overflow-y-auto md:h-[496px] bg-amber-800">
           {filteredArray.map(user => {
             return (
               <div

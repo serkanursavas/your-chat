@@ -6,7 +6,7 @@ import { AuthContext } from '../../context/AuthContext'
 import { ChatContext } from '../../context/ChatContext'
 import { useContext, useEffect, useState } from 'react'
 
-const Chats = () => {
+const Chats = ({ openChats }) => {
   const { currentUser } = useContext(AuthContext)
   const { dispatch, data } = useContext(ChatContext)
 
@@ -31,7 +31,7 @@ const Chats = () => {
   }
 
   return (
-    <div className="w-full h-[496px] overflow-hidden grow">
+    <div className="w-full h-[86%] md:h-[496px] overflow-hidden grow">
       <div className="w-full h-full overflow-y-auto bg-secondary">
         {chats
           ?.sort((a, b) => b[1].date - a[1].date)

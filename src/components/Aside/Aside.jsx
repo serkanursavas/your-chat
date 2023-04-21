@@ -2,12 +2,16 @@ import Nav from './Nav'
 import Search from './Search'
 import Chats from './Chats'
 
-const Aside = props => {
+const Aside = ({ openChats }) => {
   return (
-    <aside className="absolute -left-[70%] md:left-auto w-[70%] md:w-auto md:block flex flex-col h-full col-span-1 md:relative bg-secondary">
+    <aside
+      className={`absolute ${
+        openChats ? '-translate-x-[100%]' : 'translate-x-[0]'
+      } md:left-auto w-[80%] !h-[100%] transition-transform duration-500 ease-in-out transform  md:w-auto md:block flex flex-col md:h-full col-span-1 z-20 md:relative bg-secondary`}
+    >
       <Nav />
       <Search />
-      <Chats />
+      <Chats openChats={openChats} />
     </aside>
   )
 }
