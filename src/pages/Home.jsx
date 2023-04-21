@@ -5,36 +5,74 @@ import Aside from '../components/Aside/Aside'
 import Chat from '../components/Chat/Chat'
 import { auth } from '../store/firebase'
 import { signOut } from 'firebase/auth'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import { useEffect, useState } from 'react'
 import { useIdleTimer } from 'react-idle-timer'
+import { Button, Modal, Space } from 'antd'
+import { createContext } from 'react'
+const ReachableContext = createContext(null)
 
 const Home = () => {
-  const [isActive, setIsActive] = useState(true)
+  const [modal, contextHolder] = Modal.useModal()
   const TIMEOUT_SECONDS = 30 * 60 * 1000
 
   const [state, setState] = useState('Active')
   const [count, setCount] = useState(0)
   const [remaining, setRemaining] = useState(0)
+  const [open, setOpen] = useState(false)
+  const promptBeforeIdle = 60_000
+
+  const handleStillHere = () => {
+    activate()
+  }
+
+  const config = {
+    title: 'Are you still there? ',
+    content: (
+      <>
+        <ReachableContext.Consumer>
+          {remaining =>
+            `after ${remaining <= 60 ? remaining : ''} seconds, your session will be terminated for security purposes.`
+          }
+        </ReachableContext.Consumer>
+        <br />
+      </>
+    ),
+    okText: "I'm here",
+    cancelText: 'Sign Out',
+    onOk() {
+      handleStillHere()
+    },
+    onCancel() {
+      signOut(auth)
+    }
+  }
 
   const onIdle = () => {
+    setState('Idle')
+    setOpen(false)
     signOut(auth)
   }
 
   const onActive = () => {
     setState('Active')
+    setOpen(false)
   }
 
-  const onAction = () => {
-    setCount(count + 1)
+  const onPrompt = () => {
+    setState('Prompted')
+    setOpen(true)
+    modal.confirm(config)
   }
 
-  const { getRemainingTime } = useIdleTimer({
+  const { getRemainingTime, activate } = useIdleTimer({
     onIdle,
     onActive,
-    onAction,
-    timeout: 10_000,
-    throttle: 500
+    onPrompt,
+    timeout: TIMEOUT_SECONDS,
+    promptBeforeIdle,
+    throttle: 1000
   })
 
   useEffect(() => {
@@ -48,10 +86,13 @@ const Home = () => {
   })
 
   return (
-    <Layout>
-      <Aside />
-      <Chat />
-    </Layout>
+    <ReachableContext.Provider value={remaining}>
+      <Layout>
+        <Aside />
+        {contextHolder}
+        <Chat />
+      </Layout>
+    </ReachableContext.Provider>
   )
 }
 export default Home
