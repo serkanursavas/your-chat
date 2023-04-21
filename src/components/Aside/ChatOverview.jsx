@@ -1,7 +1,7 @@
 import ProfilePhoto from '../ProfilePhoto'
 
 const ChatOverview = ({ lastMessage, profilePhoto, username, active }) => {
-  const modifiedLastMessage = lastMessage.length > 24 ? `${lastMessage.slice(0, 24)}...` : lastMessage
+  const modifiedLastMessage = lastMessage?.length > 24 ? `${lastMessage.slice(0, 24)}...` : lastMessage
 
   return (
     <div
