@@ -6,7 +6,12 @@ const ChatInfo = ({ toggleChats }) => {
   return (
     <div className="flex items-center justify-between px-5 h-[8%] md:!h-14 bg-secondary">
       <div className="text-xl font-semibold">{data.user.name}</div>
-      <button onClick={toggleChats}>Hamb</button>
+      <button
+        className="md:hidden"
+        onClick={toggleChats}
+      >
+        Hamb
+      </button>
     </div>
   )
 }

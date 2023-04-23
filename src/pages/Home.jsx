@@ -19,10 +19,6 @@ const Home = () => {
     setOpenChats(!openChats)
   }
 
-  useEffect(() => {
-    console.log(openChats)
-  }, [openChats])
-
   const [modal, contextHolder] = Modal.useModal()
   const TIMEOUT_SECONDS = 30 * 60 * 1000
 
@@ -84,7 +80,10 @@ const Home = () => {
   return (
     <ReachableContext.Provider value={remaining}>
       <Layout>
-        <Aside openChats={openChats} />
+        <Aside
+          openChats={openChats}
+          toggleChats={toggleChats}
+        />
         {contextHolder}
         <Chat toggleChats={toggleChats} />
       </Layout>

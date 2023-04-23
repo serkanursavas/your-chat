@@ -8,7 +8,7 @@ import { ChatContext } from '../../context/ChatContext'
 
 import ChatOverview from './ChatOverview'
 
-const Search = () => {
+const Search = ({ isSearchingHandler }) => {
   const [username, setUsername] = useState()
   const [allUser, setAllUser] = useState([])
   const [filteredArray, setFilteredArray] = useState([])
@@ -65,18 +65,22 @@ const Search = () => {
         onChange={e => {
           const filteredArray = allUser.filter(item => item.name.includes(e.target.value))
           setFilteredArray(filteredArray)
+          isSearchingHandler(e.target.value)
           setUsername(e.target.value)
         }}
         value={username}
         prefix={<SearchOutlined className="!text-lg" />}
       />
       {username && (
-        <div className="overflow-y-auto md:h-[496px] bg-amber-800">
+        <div className="overflow-y-auto md:h-[496px] ">
           {filteredArray.map(user => {
             return (
               <div
                 key={user.uid}
-                onClick={event => selectHandler(event, user)}
+                onClick={event => {
+                  selectHandler(event, user)
+                  isSearchingHandler('')
+                }}
               >
                 <ChatOverview
                   username={user.name}
