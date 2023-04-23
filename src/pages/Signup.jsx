@@ -104,8 +104,10 @@ const Signup = () => {
   return !isRegister ? (
     <div className="p-5 text-center bg-white border border-gray-200 border-solid rounded-md shadow-md w-72">
       {contextHolder}
-      <h3 className="mb-2 text-3xl text-primary">YOUR CHAT</h3>
-      <h4 className="mt-2 mb-10 font-thin">Register</h4>
+      <div className="flex flex-row-reverse items-center justify-between mb-6 md:block">
+        <h3 className="md:text-3xl md:mb-2 text-primary">YOUR CHAT</h3>
+        <h4 className="text-lg font-thin md:mt-2 md:mb-10">Register</h4>
+      </div>
       <Form
         form={form}
         onFinish={onFinish}
