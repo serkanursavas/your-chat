@@ -26,10 +26,6 @@ const Chats = ({ openChats, isSearching, isSearchingHandler, toggleChats }) => {
     currentUser.uid && getChats()
   }, [currentUser.uid])
 
-  useEffect(() => {
-    console.log(isSearching)
-  }, [isSearching])
-
   const selectHandler = user => {
     dispatch({ type: 'CHANGE_USER', payload: user })
   }

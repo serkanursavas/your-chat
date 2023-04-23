@@ -39,9 +39,8 @@ const Message = props => {
           <div className="flex flex-col justify-start">
             <ProfilePhoto
               size="44"
-              profilePhoto={data.user.photoUrl}
+              profilePhoto={data.user.photoURL || data.user.photoUrl}
             />
-
             <span className="mt-1 ml-2 text-xs opacity-40">{props.messageTime}</span>
           </div>
           <div className="relative break-all px-3 py-2 mt-1 text-sm bg-white max-w-[50%] rounded-lg rounded-tl-none h-fit">

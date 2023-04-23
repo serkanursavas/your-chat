@@ -10,7 +10,8 @@ const NoMessage = () => {
           alt="Start a chat"
         />
         <p className="text-lg font-medium">Start a converstaion!</p>
-        <p className="text-xs font-light text-[#333]">Please write a message</p>
+        <p className="hidden md:block text-xs font-light text-[#333]">Please write a message</p>
+        <p className="block md:hidden text-xs font-light text-[#333]">Click chat icon which top-right to see friends</p>
       </div>
     </div>
   )

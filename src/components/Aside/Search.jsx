@@ -8,7 +8,7 @@ import { ChatContext } from '../../context/ChatContext'
 
 import ChatOverview from './ChatOverview'
 
-const Search = ({ isSearchingHandler }) => {
+const Search = ({ isSearchingHandler, toggleChats }) => {
   const [username, setUsername] = useState()
   const [allUser, setAllUser] = useState([])
   const [filteredArray, setFilteredArray] = useState([])
@@ -28,6 +28,7 @@ const Search = ({ isSearchingHandler }) => {
   }, [])
 
   const selectHandler = async (event, user) => {
+    toggleChats(false)
     dispatch({ type: 'CHANGE_USER', payload: user })
     // check is chat exist
     const combinedID = currentUser.uid > user.uid ? currentUser.uid + user.uid : user.uid + currentUser.uid

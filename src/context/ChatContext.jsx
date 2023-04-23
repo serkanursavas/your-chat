@@ -5,7 +5,6 @@ export const ChatContext = createContext()
 
 export const ChatContextProvider = ({ children }) => {
   const { currentUser } = useContext(AuthContext)
-
   const initialState = {
     chatID: 'null',
     user: {}
@@ -27,7 +26,7 @@ export const ChatContextProvider = ({ children }) => {
         user: {}
       }
     }
-
+    console.log(state)
     return state
   }
 
