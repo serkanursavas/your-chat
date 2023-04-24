@@ -65,8 +65,10 @@ const Login = () => {
     <div className="p-5 text-center bg-white border border-gray-200 border-solid rounded-md shadow-md w-72">
       {contextHolder}
       {contextHolderMessage}
-      <h3 className="mb-2 text-3xl text-primary">YOUR CHAT</h3>
-      <h4 className="mt-2 mb-10 font-thin">Login</h4>
+      <div className="flex flex-row-reverse items-center justify-between mb-6 md:block">
+        <h3 className="md:mb-2 md:text-3xl text-primary">YOUR CHAT</h3>
+        <h4 className="text-lg font-thin md:mt-2 md:mb-10">Login</h4>
+      </div>
       <Form
         form={form}
         requiredMark={true}

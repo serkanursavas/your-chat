@@ -2,11 +2,11 @@ import ChatInfo from './ChatInfo'
 import Messages from './Messages'
 import MessageInput from './MessageInput'
 
-const Chat = () => {
+const Chat = ({ toggleChats, openChats }) => {
   return (
-    <div className="relative flex flex-col col-span-2 overflow-hidden bg-beige">
-      <ChatInfo />
-      <Messages />
+    <div className="relative flex-col overflow-hidden md:flex md:col-span-2 bg-beige">
+      <ChatInfo toggleChats={toggleChats} />
+      <Messages openChats={openChats} />
       <MessageInput />
     </div>
   )

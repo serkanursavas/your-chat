@@ -49,25 +49,26 @@ const MessageInput = () => {
       <Form
         form={form}
         onFinish={onFinish}
-        className="flex justify-between w-full h-[52px] p-2 pl-0 bg-white "
+        className="flex justify-center md:justify-between w-full h-[8%] md:!h-[52px] p-2 pl-0 bg-white "
+        onClick={() => inputRef.current.focus()}
       >
         <Form.Item
           name="text"
-          className="flex items-center h-full"
+          className="flex items-center w-full !h-full "
         >
           <Input
             ref={inputRef}
-            className="!border-none !shadow-none !text-lg !w-[430px] !h-full"
+            className="!border-none !shadow-none !truncate !text-lg !w-[260px] sm:!w-[540px] md:!w-[430px] md:!h-full"
             type="text"
             placeholder=" Type something..."
             autoComplete="off"
           />
         </Form.Item>
         <div className="flex items-center gap-4">
-          <button className="p-0 bg-transparent border-none cursor-pointer hover:text-primary">
+          <button className="hidden p-0 bg-transparent border-none cursor-pointer md:block hover:text-primary">
             <PaperClipOutlined className="text-xl opacity-30" />
           </button>
-          <button className="p-0 bg-transparent border-none cursor-pointer hover:text-primary">
+          <button className="hidden p-0 bg-transparent border-none cursor-pointer md:block hover:text-primary">
             <PictureOutlined className="text-xl opacity-30" />
           </button>
 

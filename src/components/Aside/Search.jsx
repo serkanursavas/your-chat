@@ -8,7 +8,7 @@ import { ChatContext } from '../../context/ChatContext'
 
 import ChatOverview from './ChatOverview'
 
-const Search = () => {
+const Search = ({ isSearchingHandler, toggleChats }) => {
   const [username, setUsername] = useState()
   const [allUser, setAllUser] = useState([])
   const [filteredArray, setFilteredArray] = useState([])
@@ -28,6 +28,7 @@ const Search = () => {
   }, [])
 
   const selectHandler = async (event, user) => {
+    toggleChats(false)
     dispatch({ type: 'CHANGE_USER', payload: user })
     // check is chat exist
     const combinedID = currentUser.uid > user.uid ? currentUser.uid + user.uid : user.uid + currentUser.uid
@@ -58,25 +59,29 @@ const Search = () => {
   }
 
   return (
-    <div className="!scroll-x-auto relative">
+    <div className="!scroll-x-auto h-[40px] relative ">
       <Input
-        className="custom-input cursor-pointer search-input !shadow-none !p-3 !bg-secondary hover:!border-black focus:!border-black placeholder:!text-[#3d3d3d47] !border-[#3d3d3d47]"
+        className="custom-input cursor-pointer !h-full search-input !shadow-none !p-3 !bg-secondary hover:!border-black focus:!border-black placeholder:!text-[#3d3d3d47] !border-[#3d3d3d47]"
         placeholder="Find a user"
         onChange={e => {
-          const filteredArray = allUser.filter(item => item.name.includes(e.target.value))
+          const filteredArray = allUser.filter(item => item.name.toLowerCase().includes(e.target.value))
           setFilteredArray(filteredArray)
+          isSearchingHandler(e.target.value)
           setUsername(e.target.value)
         }}
         value={username}
         prefix={<SearchOutlined className="!text-lg" />}
       />
       {username && (
-        <div className="overflow-y-auto h-[496px]">
+        <div className="overflow-y-auto md:h-[496px] ">
           {filteredArray.map(user => {
             return (
               <div
                 key={user.uid}
-                onClick={event => selectHandler(event, user)}
+                onClick={event => {
+                  selectHandler(event, user)
+                  isSearchingHandler('')
+                }}
               >
                 <ChatOverview
                   username={user.name}
