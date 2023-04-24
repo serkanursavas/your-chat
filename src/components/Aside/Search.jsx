@@ -64,7 +64,7 @@ const Search = ({ isSearchingHandler, toggleChats }) => {
         className="custom-input cursor-pointer !h-full search-input !shadow-none !p-3 !bg-secondary hover:!border-black focus:!border-black placeholder:!text-[#3d3d3d47] !border-[#3d3d3d47]"
         placeholder="Find a user"
         onChange={e => {
-          const filteredArray = allUser.filter(item => item.name.includes(e.target.value))
+          const filteredArray = allUser.filter(item => item.name.toLowerCase().includes(e.target.value))
           setFilteredArray(filteredArray)
           isSearchingHandler(e.target.value)
           setUsername(e.target.value)
