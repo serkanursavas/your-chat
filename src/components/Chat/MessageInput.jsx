@@ -49,7 +49,7 @@ const MessageInput = () => {
       <Form
         form={form}
         onFinish={onFinish}
-        className="flex justify-center md:justify-between w-full !h-[8%]  md:h-[52px] p-2 pl-0 bg-white "
+        className="flex justify-center md:justify-between w-full h-[8%] md:!h-[52px] p-2 pl-0 bg-white "
         onClick={() => inputRef.current.focus()}
       >
         <Form.Item

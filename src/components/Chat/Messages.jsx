@@ -21,7 +21,7 @@ const Messages = () => {
   }, [data.chatID])
 
   return (
-    <div className="box-border relative px-5 pt-4 h-[84%] md:h-[492px] overflow-auto bg-beige">
+    <div className="box-border relative px-5 pt-4 h-[84%] md:h-[484px] overflow-auto grow bg-beige">
       {messages.length !== 0 ? (
         messages.map(message => {
           const dateObj = new Date(message.date * 1000)

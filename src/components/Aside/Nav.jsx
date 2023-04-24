@@ -31,7 +31,7 @@ const Nav = () => {
   const { currentUser } = useContext(AuthContext)
 
   return (
-    <div className="flex items-center justify-between px-2 !h-[8%] md:h-14 bg-primary">
+    <div className="flex items-center justify-between px-2 h-[8%] md:!h-16 bg-primary">
       <div className="font-semibold select-none text-lg text-[#C9DFE7]">Your Chat</div>
       <div className="flex items-center justify-center">
         <Dropdown

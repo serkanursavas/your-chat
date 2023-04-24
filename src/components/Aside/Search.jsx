@@ -59,7 +59,7 @@ const Search = ({ isSearchingHandler, toggleChats }) => {
   }
 
   return (
-    <div className="!scroll-x-auto !h-[6%] relative ">
+    <div className="!scroll-x-auto h-[40px] relative ">
       <Input
         className="custom-input cursor-pointer !h-full search-input !shadow-none !p-3 !bg-secondary hover:!border-black focus:!border-black placeholder:!text-[#3d3d3d47] !border-[#3d3d3d47]"
         placeholder="Find a user"
