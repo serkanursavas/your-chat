@@ -85,7 +85,10 @@ const Home = () => {
           toggleChats={toggleChats}
         />
         {contextHolder}
-        <Chat toggleChats={toggleChats} />
+        <Chat
+          toggleChats={toggleChats}
+          openChats={openChats}
+        />
       </Layout>
     </ReachableContext.Provider>
   )

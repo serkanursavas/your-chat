@@ -6,7 +6,7 @@ import { ChatContext } from '../../context/ChatContext'
 import { db } from '../../store/firebase'
 import NoMessage from '../UI/NoMessage'
 
-const Messages = () => {
+const Messages = ({ openChats }) => {
   const [messages, setMessages] = useState([])
   const { data } = useContext(ChatContext)
 
@@ -22,7 +22,7 @@ const Messages = () => {
 
   return (
     <div className="box-border relative px-5 pt-4 h-[84%] md:h-[484px] overflow-auto grow bg-beige">
-      {messages.length !== 0 ? (
+      {messages.length !== 0 && openChats ? (
         messages.map(message => {
           const dateObj = new Date(message.date * 1000)
           // Get the locale-specific date string in 24-hour format
