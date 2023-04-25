@@ -19,7 +19,7 @@ function App() {
 
   const ProtectedRoute = ({ children }) => {
     if (currentUser === null) {
-      return <Navigate to="login" />
+      return <Navigate to="../login" />
     } else {
       return children
     }
@@ -33,7 +33,7 @@ function App() {
             key={route.path}
             path={route.path}
             element={
-              route.name === 'Home' ? (
+              route.name === 'Home' || route.name === 'Profile' ? (
                 <ProtectedRoute>{isLoading ? <Spin size="large" /> : <route.component />}</ProtectedRoute>
               ) : (
                 <route.component />
