@@ -1,6 +1,6 @@
 import { Form, Input, Button, Upload } from 'antd'
 import { UserOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons'
-import { useState, useRef } from 'react'
+import { useState, useRef, useContext } from 'react'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { auth, db } from '../store/firebase'
@@ -8,12 +8,15 @@ import { doc, setDoc } from 'firebase/firestore'
 import { useNavigate, Link } from 'react-router-dom'
 import { Spin } from 'antd'
 
+import { AuthContext } from '../context/AuthContext'
+
 const Signup = () => {
   const navigate = useNavigate()
+  const { currentUser } = useContext(AuthContext)
+  const [inputValue, setInputValue] = useState('Hello World')
 
   const [form] = Form.useForm()
   const [username, setUsername] = useState()
-  const emailRef = useRef(null)
   const [isRegister, setIsRegister] = useState(false)
 
   const onFinish = async values => {
@@ -52,7 +55,7 @@ const Signup = () => {
 
   // uploading img to firestore
   const [loading, setLoading] = useState(false)
-  const [imageUrl, setImageUrl] = useState()
+  const [imageUrl, setImageUrl] = useState(currentUser.photoURL)
   const handleChange = info => {
     if (info.file.status === 'uploading') {
       setLoading(true)
@@ -112,6 +115,7 @@ const Signup = () => {
             prefix={<UserOutlined />}
             placeholder=" Name"
             className="custom-input !shadow-none"
+            value={inputValue}
             onChange={e => {
               setUsername(e.target.value)
             }}
@@ -135,7 +139,6 @@ const Signup = () => {
             fileList={null}
             onChange={handleChange}
             customRequest={({ file }) => handleFileUpload(file)}
-            disabled={username === undefined}
           >
             {imageUrl ? (
               <img
