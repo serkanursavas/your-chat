@@ -1,5 +1,5 @@
 import { Dropdown } from 'antd'
-import { PoweroffOutlined } from '@ant-design/icons'
+import { PoweroffOutlined, EditOutlined } from '@ant-design/icons'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../store/firebase'
 
@@ -8,21 +8,23 @@ import { useContext } from 'react'
 import { AuthContext } from '../../context/AuthContext'
 import { ChatContext } from '../../context/ChatContext'
 
+import { useNavigate } from 'react-router-dom'
+
 const Nav = () => {
+  const navigate = useNavigate()
   const { dispatch } = useContext(ChatContext)
   const items = [
     {
       key: '1',
-      icon: <PoweroffOutlined />,
+      icon: <EditOutlined />,
       label: (
         <button
           onClick={() => {
-            dispatch({ type: 'LOGOUT_USER' })
-            signOut(auth)
+            navigate('/profile')
           }}
           className="w-full bg-transparent border-none shadow-none outline-none hover:cursor-pointer"
         >
-          Logout
+          Profile
         </button>
       )
     }

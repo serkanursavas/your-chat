@@ -176,7 +176,7 @@ const Signup = () => {
 
       <p className="text-sm font-light">
         <Link
-          to="/login"
+          to="/"
           className="no-underline text-primary"
         >
           Go back
