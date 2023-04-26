@@ -27,6 +27,21 @@ const Nav = () => {
           Profile
         </button>
       )
+    },
+    {
+      key: '2',
+      icon: <PoweroffOutlined />,
+      label: (
+        <button
+          onClick={() => {
+            dispatch({ type: 'LOGOUT_USER' })
+            signOut(auth)
+          }}
+          className="w-full bg-transparent border-none shadow-none outline-none hover:cursor-pointer"
+        >
+          Logout
+        </button>
+      )
     }
   ]
 
