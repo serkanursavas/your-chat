@@ -4,53 +4,50 @@ import { useState, useRef, useContext } from 'react'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { auth, db } from '../store/firebase'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, setDoc, updateDoc } from 'firebase/firestore'
 import { useNavigate, Link } from 'react-router-dom'
-import { Spin } from 'antd'
 
 import { AuthContext } from '../context/AuthContext'
 
 const Signup = () => {
   const navigate = useNavigate()
   const { currentUser } = useContext(AuthContext)
-  const [inputValue, setInputValue] = useState('Hello World')
-
+  console.log(currentUser)
   const [form] = Form.useForm()
-  const [username, setUsername] = useState()
-  const [isRegister, setIsRegister] = useState(false)
+  const [username, setUsername] = useState(currentUser.displayName)
 
   const onFinish = async values => {
     const name = values.name
-    const email = values.email
-    const password = values.password
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async response => {
-        setIsRegister(true)
-        await updateProfile(response.user, {
-          displayName: name,
-          photoURL: imageUrl
-        })
-
-        // Add a new document in collection "users"
-        await setDoc(doc(db, 'users', response.user.uid), {
-          uid: response.user.uid,
-          name,
-          email,
-          photoURL: imageUrl
-        })
-
-        await setDoc(doc(db, 'userChats', response.user.uid), {})
-        navigate('/')
+    try {
+      await updateProfile(currentUser, {
+        displayName: name,
+        photoURL: imageUrl
       })
-      .catch(error => {
-        setIsRegister(false)
-        const errorCode = error.code
-        if (errorCode === 'auth/email-already-in-use') {
-          openNotificationWithIcon('error', 'topLeft')
-          emailRef.current.focus()
+
+      // Add a new document in collection "users"
+      await setDoc(doc(db, 'users', currentUser.uid), {
+        uid: currentUser.uid,
+        name: name,
+        email: currentUser.email,
+        photoURL: imageUrl
+      })
+
+      const combinedID = currentUser.uid + currentUser.uid
+      // Create userChat
+      await updateDoc(doc(db, 'userChats', currentUser.uid), {
+        [combinedID + '.userInfo']: {
+          uid: currentUser.uid,
+          name: name,
+          email: currentUser.email,
+          photoURL: imageUrl
         }
       })
+
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   // uploading img to firestore
@@ -92,7 +89,7 @@ const Signup = () => {
     </div>
   )
 
-  return !isRegister ? (
+  return (
     <div className="p-5 text-center bg-white border border-gray-200 border-solid rounded-md shadow-md w-72">
       <div className="flex flex-row-reverse items-center justify-between mb-6 md:block">
         <h4 className="text-lg font-thin md:mt-2 md:mb-10">Update Profile</h4>
@@ -104,6 +101,7 @@ const Signup = () => {
       >
         <Form.Item
           name="name"
+          initialValue={username}
           rules={[
             {
               required: true,
@@ -115,7 +113,6 @@ const Signup = () => {
             prefix={<UserOutlined />}
             placeholder=" Name"
             className="custom-input !shadow-none"
-            value={inputValue}
             onChange={e => {
               setUsername(e.target.value)
             }}
@@ -186,8 +183,6 @@ const Signup = () => {
         </Link>
       </p>
     </div>
-  ) : (
-    <Spin size="large" />
   )
 }
 
