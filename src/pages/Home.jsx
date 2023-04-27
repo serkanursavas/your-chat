@@ -13,7 +13,7 @@ import { createContext } from 'react'
 const ReachableContext = createContext(null)
 
 const Home = () => {
-  const [openChats, setOpenChats] = useState(true)
+  const [openChats, setOpenChats] = useState(false)
 
   const toggleChats = () => {
     setOpenChats(!openChats)

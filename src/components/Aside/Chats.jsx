@@ -30,6 +30,8 @@ const Chats = ({ openChats, isSearching, isSearchingHandler, toggleChats }) => {
     dispatch({ type: 'CHANGE_USER', payload: user })
   }
 
+  const isMediumOrLarger = window.matchMedia('(min-width: 768px)').matches
+
   return (
     isSearching.length == 0 && (
       <div className="w-full h-[86%] md:h-[496px] overflow-hidden grow">
@@ -42,7 +44,7 @@ const Chats = ({ openChats, isSearching, isSearchingHandler, toggleChats }) => {
                   key={chat[0]}
                   onClick={() => {
                     selectHandler(chat[1].userInfo)
-                    toggleChats(false)
+                    !isMediumOrLarger && toggleChats(false)
                   }}
                 >
                   <ChatOverview

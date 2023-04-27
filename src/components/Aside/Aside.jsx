@@ -13,7 +13,7 @@ const Aside = ({ openChats, toggleChats }) => {
   return (
     <aside
       className={`absolute ${
-        openChats ? '-translate-x-[100%]' : 'translate-x-[0]'
+        openChats ? 'translate-x-[0]' : '-translate-x-[100%]'
       } md:left-auto md:translate-x-[0] w-[80%] !h-[100%] transition-transform duration-500 ease-in-out transform  md:w-auto md:block flex flex-col md:h-full col-span-1 z-20 md:relative bg-secondary`}
     >
       <Nav />
