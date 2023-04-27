@@ -26,7 +26,6 @@ export const ChatContextProvider = ({ children }) => {
         user: {}
       }
     }
-    console.log(state)
     return state
   }
 

@@ -36,6 +36,7 @@ const Signup = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async response => {
         setIsRegister(true)
+        console.log(response.user)
         await updateProfile(response.user, {
           displayName: name,
           photoURL: imageUrl
