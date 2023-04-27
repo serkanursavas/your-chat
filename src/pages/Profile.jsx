@@ -1,5 +1,5 @@
 import { Form, Input, Button, Upload } from 'antd'
-import { UserOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons'
+import { UserOutlined, PlusOutlined, LoadingOutlined, ArrowLeftOutlined } from '@ant-design/icons'
 import { useState, useRef, useContext } from 'react'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
@@ -12,36 +12,11 @@ import { AuthContext } from '../context/AuthContext'
 const Signup = () => {
   const navigate = useNavigate()
   const { currentUser } = useContext(AuthContext)
-  console.log(currentUser)
-  const [form] = Form.useForm()
-  const [username, setUsername] = useState(currentUser.displayName)
 
   const onFinish = async values => {
-    const name = values.name
-
     try {
       await updateProfile(currentUser, {
-        displayName: name,
         photoURL: imageUrl
-      })
-
-      // Add a new document in collection "users"
-      await setDoc(doc(db, 'users', currentUser.uid), {
-        uid: currentUser.uid,
-        name: name,
-        email: currentUser.email,
-        photoURL: imageUrl
-      })
-
-      const combinedID = currentUser.uid + currentUser.uid
-      // Create userChat
-      await updateDoc(doc(db, 'userChats', currentUser.uid), {
-        [combinedID + '.userInfo']: {
-          uid: currentUser.uid,
-          name: name,
-          email: currentUser.email,
-          photoURL: imageUrl
-        }
       })
 
       navigate('/')
@@ -61,7 +36,7 @@ const Signup = () => {
   }
   const handleFileUpload = async file => {
     const storage = getStorage()
-    const storageRef = ref(storage, username)
+    const storageRef = ref(storage, currentUser.displayName)
 
     const uploadTask = uploadBytesResumable(storageRef, file)
 
@@ -69,10 +44,11 @@ const Signup = () => {
       error => {
         // Handle unsuccessful uploads
       },
-      async () => {
-        const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref)
-        setLoading(false)
-        setImageUrl(downloadUrl)
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(downloadUrl => {
+          setLoading(false)
+          setImageUrl(downloadUrl)
+        })
       }
     )
   }
@@ -92,41 +68,22 @@ const Signup = () => {
   return (
     <div className="p-5 text-center bg-white border border-gray-200 border-solid rounded-md shadow-md w-72">
       <div className="flex flex-row-reverse items-center justify-between mb-6 md:block">
-        <h4 className="text-lg font-thin md:mt-2 md:mb-10">Update Profile</h4>
+        <h4 className="text-lg font-normal text-primary md:mt-2 ">Update Profile Photo</h4>
+        <h4 className="mt-1 text-xs font-thin">Upload new photo by clicking photo below</h4>
       </div>
       <Form
-        form={form}
         onFinish={onFinish}
         requiredMark={true}
       >
         <Form.Item
-          name="name"
-          initialValue={username}
-          rules={[
-            {
-              required: true,
-              message: 'Please enter a valid username!'
-            }
-          ]}
-        >
-          <Input
-            prefix={<UserOutlined />}
-            placeholder=" Name"
-            className="custom-input !shadow-none"
-            onChange={e => {
-              setUsername(e.target.value)
-            }}
-          />
-        </Form.Item>
-
-        <Form.Item
           required
           name="upload"
-          rules={[
-            {
-              required: true
-            }
-          ]}
+          // rules={[
+          //   {
+          //     required: true,
+          //     message: 'please'
+          //   }
+          // ]}
         >
           <Upload
             name="avatar"
@@ -166,22 +123,22 @@ const Signup = () => {
               type="primary"
               htmlType="submit"
               className="w-full mt-4 font-medium"
-              disabled={loading || !!form.getFieldsError().filter(({ errors }) => errors.length).length}
             >
-              Update Profile
+              Go Back
             </Button>
           )}
         </Form.Item>
       </Form>
 
-      <p className="text-sm font-light">
+      {/* <p className="px-4 py-1 mx-auto text-sm font-light border-solid rounded-lg border-primary w-fit">
+        <ArrowLeftOutlined />
         <Link
           to="/"
-          className="no-underline text-primary"
+          className="ml-1 text-black no-underline"
         >
           Go back
         </Link>
-      </p>
+      </p> */}
     </div>
   )
 }

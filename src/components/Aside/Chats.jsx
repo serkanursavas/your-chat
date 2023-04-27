@@ -30,8 +30,6 @@ const Chats = ({ openChats, isSearching, isSearchingHandler, toggleChats }) => {
     dispatch({ type: 'CHANGE_USER', payload: user })
   }
 
-  console.log(chats)
-
   return (
     isSearching.length == 0 && (
       <div className="w-full h-[86%] md:h-[496px] overflow-hidden grow">
