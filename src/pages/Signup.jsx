@@ -1,7 +1,7 @@
 import { Form, Input, Button, Upload, notification } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useState, useRef } from 'react'
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { auth, db } from '../store/firebase'
 import { doc, setDoc } from 'firebase/firestore'
@@ -11,22 +11,27 @@ import { Spin } from 'antd'
 const Signup = () => {
   const navigate = useNavigate()
   const [api, contextHolder] = notification.useNotification()
-  const openNotificationWithIcon = (type, placement) => {
+  const openNotificationWithIcon = (type, placement, title, desc) => {
     api[type]({
-      message: 'Email already use in.',
-      description: 'Please enter a different email.',
+      message: title,
+      description: desc,
       placement,
-      style: {
-        boxShadow:
-          '0px 2px 4px rgba(255, 0, 0, 0.2), 0px 4px 8px rgba(255, 0, 0, 0.1), 0px 8px 16px rgba(255, 0, 0, 0.05)'
-      }
+      style:
+        type === 'error'
+          ? {
+              boxShadow:
+                '0px 2px 4px rgba(255, 0, 0, 0.2), 0px 4px 8px rgba(255, 0, 0, 0.1), 0px 8px 16px rgba(255, 0, 0, 0.05)'
+            }
+          : {
+              boxShadow:
+                '0px 2px 4px rgba(0, 255, 0, 0.2), 0px 4px 8px rgba(0, 255, 0, 0.1), 0px 8px 16px rgba(0, 255, 0, 0.05)'
+            }
     })
   }
 
   const [form] = Form.useForm()
   const [username, setUsername] = useState()
   const emailRef = useRef(null)
-  const [isRegister, setIsRegister] = useState(false)
 
   const onFinish = async values => {
     const name = values.name
@@ -35,8 +40,8 @@ const Signup = () => {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then(async response => {
-        setIsRegister(true)
-        console.log(response.user)
+        openNotificationWithIcon('success', 'topLeft', 'The Verification Mail', 'Please verify email using the link')
+
         await updateProfile(response.user, {
           displayName: name,
           photoURL: imageUrl
@@ -51,13 +56,22 @@ const Signup = () => {
         })
 
         await setDoc(doc(db, 'userChats', response.user.uid), {})
-        navigate('/')
+
+        await sendEmailVerification(auth.currentUser)
+
+        setTimeout(() => {
+          const unsub = navigate('/login')
+
+          return () => {
+            unsub()
+          }
+        }, [2500])
       })
       .catch(error => {
         setIsRegister(false)
         const errorCode = error.code
         if (errorCode === 'auth/email-already-in-use') {
-          openNotificationWithIcon('error', 'topLeft')
+          openNotificationWithIcon('error', 'topLeft', 'Email already use in.', 'Please enter a different email.')
           emailRef.current.focus()
         }
       })
@@ -102,7 +116,7 @@ const Signup = () => {
     </div>
   )
 
-  return !isRegister ? (
+  return (
     <div className="p-5 text-center bg-white border border-gray-200 border-solid rounded-md shadow-md w-72">
       {contextHolder}
       <div className="flex flex-row-reverse items-center justify-between mb-6 md:block">
@@ -241,8 +255,6 @@ const Signup = () => {
         </Link>
       </p>
     </div>
-  ) : (
-    <Spin size="large" />
   )
 }
 

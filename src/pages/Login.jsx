@@ -1,7 +1,7 @@
 import { Form, Input, Button, notification, message } from 'antd'
 import { LockOutlined, MailOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { auth } from '../store/firebase'
 import { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -25,15 +25,21 @@ const Login = () => {
   }
 
   const [api, contextHolder] = notification.useNotification()
-  const openNotificationWithIcon = (type, placement, errorMessage) => {
+  const openNotificationWithIcon = (type, placement, errorMessage, desc) => {
     api[type]({
       message: errorMessage,
-      description: 'Please check your login information.',
+      description: desc || 'Please check your login information.',
       placement,
-      style: {
-        boxShadow:
-          '0px 2px 4px rgba(255, 0, 0, 0.2), 0px 4px 8px rgba(255, 0, 0, 0.1), 0px 8px 16px rgba(255, 0, 0, 0.05)'
-      }
+      style:
+        type === 'error'
+          ? {
+              boxShadow:
+                '0px 2px 4px rgba(255, 0, 0, 0.2), 0px 4px 8px rgba(255, 0, 0, 0.1), 0px 8px 16px rgba(255, 0, 0, 0.05)'
+            }
+          : {
+              boxShadow:
+                '0px 2px 4px rgba(255, 255, 0, 0.2), 0px 4px 8px rgba(255, 255, 0, 0.1), 0px 8px 16px rgba(255, 255, 0, 0.05)'
+            }
     })
   }
 
@@ -42,20 +48,25 @@ const Login = () => {
     const password = values.password
 
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        // Signed in
-        navigate('/')
-        // ...
+      .then(response => {
+        if (response.user.emailVerified) {
+          // Signed in
+          navigate('/')
+          // ...
+        } else {
+          signOut(auth)
+          openNotificationWithIcon('warning', 'topLeft', 'Verify Email Adress', 'Via the link in your mail box')
+        }
       })
       .catch(error => {
         const errorCode = error.code
         if (errorCode === 'auth/user-not-found') {
-          openNotificationWithIcon('error', 'topLeft', 'User not found')
+          openNotificationWithIcon('error', 'topLeft', 'User Not Found')
           emailRef.current.focus()
         } else if (errorCode === 'auth/too-many-requests') {
           success()
         } else {
-          openNotificationWithIcon('error', 'topLeft', 'Wrong password')
+          openNotificationWithIcon('error', 'topLeft', 'Wrong Password')
           passwordRef.current.focus()
         }
       })
