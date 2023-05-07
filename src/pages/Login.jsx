@@ -125,6 +125,14 @@ const Login = () => {
             className="custom-input !shadow-none"
           />
         </Form.Item>
+        <div className="w-full -mt-2 text-right">
+          <Link
+            to="/passwordreset"
+            className="no-underline text-primary"
+          >
+            Forgot Password?
+          </Link>
+        </div>
 
         <Form.Item shouldUpdate>
           {() => (
